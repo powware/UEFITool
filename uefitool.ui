@@ -180,7 +180,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>31</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -218,6 +218,7 @@
       <string>&amp;Image</string>
      </property>
      <addaction name="actionExtract"/>
+     <addaction name="actionPatch"/>
     </widget>
     <widget class="QMenu" name="menuRegionActions">
      <property name="title">
@@ -549,6 +550,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+Space</string>
+   </property>
+  </action>
+  <action name="actionPatch">
+   <property name="text">
+    <string>Patch</string>
    </property>
   </action>
  </widget>

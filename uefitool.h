@@ -25,6 +25,7 @@
 #include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
+#include <QModelIndex>
 #include <QMimeData>
 #include <QPlainTextEdit>
 #include <QProcess>
@@ -68,6 +69,8 @@ public:
     void extractAsIs();
     void extractBody();
 
+    void patch();
+
     void insert(const UINT8 mode);
     void insertInto();
     void insertBefore();
@@ -102,6 +105,7 @@ private:
     QString currentProgramPath;
     QQueue<MessageListItem> messageItems;
     const QString version;
+    QString opened_image_path;
 
     void showMessages();
 

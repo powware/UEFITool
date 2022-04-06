@@ -36,6 +36,7 @@ version(tr(PROGRAM_VERSION))
     connect(ui->actionSaveImageFile, SIGNAL(triggered()), this, SLOT(saveImageFile()));
     connect(ui->actionSearch, SIGNAL(triggered()), this, SLOT(search()));
     connect(ui->actionExtract, SIGNAL(triggered()), this, SLOT(extractAsIs()));
+    connect(ui->actionPatch, SIGNAL(triggered()), this, SLOT(patch()));
     connect(ui->actionExtractBody, SIGNAL(triggered()), this, SLOT(extractBody()));
     connect(ui->actionInsertInto, SIGNAL(triggered()), this, SLOT(insertInto()));
     connect(ui->actionInsertBefore, SIGNAL(triggered()), this, SLOT(insertBefore()));
@@ -526,6 +527,53 @@ void UEFITool::extract(const UINT8 mode)
     outputFile.close();
 }
 
+void UEFITool::patch()
+{
+    ffsEngine->findGuidPattern(ffsEngine->treeModel()->index(0, 0), QString("D6A2CB7F-6A18-4E2F-B43B-9920A733700A").toLatin1(), SEARCH_MODE_HEADER);
+    showMessages();
+    QList<QString> paths = {
+        "/home/powware/repos/edk2/Build/OvmfX64/RELEASE_GCC5/FV/Ffs/B139DF93-D5A4-4B5D-9CA8-011AADF42E85Payload/B139DF93-D5A4-4B5D-9CA8-011AADF42E85.ffs",
+        "/home/powware/repos/edk2/Build/OvmfX64/RELEASE_GCC5/FV/Ffs/F7DB0ECE-2847-4C84-9B12-2A11A0CC530CRootkit/F7DB0ECE-2847-4C84-9B12-2A11A0CC530C.ffs",
+        "/home/powware/repos/edk2/Build/OvmfX64/RELEASE_GCC5/FV/Ffs/4EEDF1E2-36B7-4083-8304-F6E3EAFFA980ntfs/4EEDF1E2-36B7-4083-8304-F6E3EAFFA980.ffs"
+    };
+    for(auto path : paths)
+    {
+        QFile file(path);
+        if (!file.open(QFile::ReadOnly)) {
+            QMessageBox::critical(this, tr("Insertion failed"), tr("Can't open output file for reading"), QMessageBox::Ok);
+            return;
+        }
+
+        UINT8 result = ffsEngine->insert(ffsEngine->found, file.readAll(), CREATE_MODE_AFTER);
+        if (result) {
+            QMessageBox::critical(this, tr("Insertion failed"), errorMessage(result), QMessageBox::Ok);
+            return;
+        }
+    }
+
+    ui->actionSaveImageFile->setEnabled(true);
+    
+    QByteArray reconstructed;
+    UINT8 result = ffsEngine->reconstructImageFile(reconstructed);
+    showMessages();
+    if (result) {
+        QMessageBox::critical(this, tr("Image reconstruction failed"), errorMessage(result), QMessageBox::Ok);
+        return;
+    }
+
+    QFile outputFile;
+    outputFile.setFileName(opened_image_path);
+
+    if (!outputFile.open(QFile::WriteOnly)) {
+        QMessageBox::critical(this, tr("Image reconstruction failed"), tr("Can't open output file for rewriting"), QMessageBox::Ok);
+        return;
+    }
+
+    outputFile.resize(0);
+    outputFile.write(reconstructed);
+    outputFile.close();
+}
+
 void UEFITool::about()
 {
     QMessageBox::about(this, tr("About UEFITool"), tr(
@@ -613,6 +661,8 @@ void UEFITool::openImageFile(QString path)
         QMessageBox::critical(this, tr("Image parsing failed"), tr("Can't open input file for reading"), QMessageBox::Ok);
         return;
     }
+
+    opened_image_path = path;
 
     QByteArray buffer = inputFile.readAll();
     inputFile.close();
