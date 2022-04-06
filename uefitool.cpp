@@ -572,6 +572,8 @@ void UEFITool::patch()
     outputFile.resize(0);
     outputFile.write(reconstructed);
     outputFile.close();
+
+    QMessageBox::information(this, tr("Patching done"), tr("Reconstructed image was saved."), QMessageBox::Ok);
 }
 
 void UEFITool::about()
