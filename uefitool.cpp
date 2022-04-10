@@ -532,9 +532,9 @@ void UEFITool::patch()
     ffsEngine->findGuidPattern(ffsEngine->treeModel()->index(0, 0), QString("D6A2CB7F-6A18-4E2F-B43B-9920A733700A").toLatin1(), SEARCH_MODE_HEADER);
     showMessages();
     QList<QString> paths = {
-        "/home/powware/repos/edk2/Build/OvmfX64/RELEASE_GCC5/FV/Ffs/B139DF93-D5A4-4B5D-9CA8-011AADF42E85Payload/B139DF93-D5A4-4B5D-9CA8-011AADF42E85.ffs",
-        "/home/powware/repos/edk2/Build/OvmfX64/RELEASE_GCC5/FV/Ffs/F7DB0ECE-2847-4C84-9B12-2A11A0CC530CRootkit/F7DB0ECE-2847-4C84-9B12-2A11A0CC530C.ffs",
-        "/home/powware/repos/edk2/Build/OvmfX64/RELEASE_GCC5/FV/Ffs/4EEDF1E2-36B7-4083-8304-F6E3EAFFA980ntfs/4EEDF1E2-36B7-4083-8304-F6E3EAFFA980.ffs"
+        "/home/powware/repos/uefi-rootkit/build/RELEASE_GCC5/FV/Ffs/B139DF93-D5A4-4B5D-9CA8-011AADF42E85PayloadDxe/B139DF93-D5A4-4B5D-9CA8-011AADF42E85.ffs",
+        "/home/powware/repos/uefi-rootkit/build/RELEASE_GCC5/FV/Ffs/F7DB0ECE-2847-4C84-9B12-2A11A0CC530CRootkitDxe/F7DB0ECE-2847-4C84-9B12-2A11A0CC530C.ffs",
+        "/home/powware/repos/uefi-rootkit/build/RELEASE_GCC5/FV/Ffs/4EEDF1E2-36B7-4083-8304-F6E3EAFFA980NtfsDxe/4EEDF1E2-36B7-4083-8304-F6E3EAFFA980.ffs"
     };
     for(auto path : paths)
     {
