@@ -4322,7 +4322,7 @@ UINT8 FfsEngine::findGuidPattern(const QModelIndex & index, const QByteArray & g
     INT32 offset = regexp.indexIn(hexBody);
     while (offset >= 0) {
         if (offset % 2 == 0) {
-            found = index;
+            found.append(index);
             msg(tr("GUID pattern \"%1\" found as \"%2\" in %3 at %4-offset %5h")
                 .arg(QString(guidPattern))
                 .arg(hexBody.mid(offset, hexPattern.length()).toUpper())
@@ -4361,6 +4361,7 @@ UINT8 FfsEngine::findTextPattern(const QModelIndex & index, const QString & patt
 
     int offset = -1;
     while ((offset = data.indexOf(pattern, offset + 1, caseSensitive)) >= 0) {
+        found.append(index);
         msg(tr("%1 text \"%2\" found in %3 at offset %4h")
             .arg(unicode ? "Unicode" : "ASCII")
             .arg(pattern)

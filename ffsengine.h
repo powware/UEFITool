@@ -52,7 +52,7 @@ public:
 
     // Returns model for Qt view classes
     TreeModel* treeModel() const;
-    QModelIndex found;
+    QList<QModelIndex> found;
 
 #ifndef _CONSOLE
     // Returns message items queue
